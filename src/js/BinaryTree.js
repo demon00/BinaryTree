@@ -41,7 +41,7 @@ export default class BinaryTree {
 
   insertNode(node, newNode) {
     if (this.contains(newNode.data)) {
-      throw new SyntaxError(`This tree already contains '${newNode.data}'`);
+      throw new Error(`This tree already contains '${newNode.data}'`);
     } else {
       if (this.comparator(newNode.data, node.data)) {
         if (node.left === null) {
@@ -67,37 +67,38 @@ export default class BinaryTree {
   removeNode(node, key) {
 
     if (!this.contains(key)) {
-      throw new SyntaxError(`This tree does not contain '${key}'`);
-    }
-
-    if (node === null) {
-      return null;
-    } else if (this.comparator(key.data, node.data)) {
-      node.left = this.removeNode(node.left, key);
-      return node;
-    } else if (key > node.data) {
-      node.right = this.removeNode(node.right, key);
-      return node;
+      throw new Error(`This tree does not contain '${key}'`);
     } else {
 
-      if (node.left === null && node.right === null) {
-        node = null;
+      if (node === null) {
+        return null;
+      } else if (this.comparator(key.data, node.data)) {
+        node.left = this.removeNode(node.left, key);
+        return node;
+      } else if (key > node.data) {
+        node.right = this.removeNode(node.right, key);
+        return node;
+      } else {
+
+        if (node.left === null && node.right === null) {
+          node = null;
+          return node;
+        }
+
+        if (node.left === null) {
+          node = node.right;
+          return node;
+        } else if (node.right === null) {
+          node = node.left;
+          return node;
+        }
+
+        var aux = this.findMinNode(node.right);
+        node.data = aux.data;
+
+        node.right = this.removeNode(node.right, aux.data);
         return node;
       }
-
-      if (node.left === null) {
-        node = node.right;
-        return node;
-      } else if (node.right === null) {
-        node = node.left;
-        return node;
-      }
-
-      var aux = this.findMinNode(node.right);
-      node.data = aux.data;
-
-      node.right = this.removeNode(node.right, aux.data);
-      return node;
     }
   }
 
@@ -130,7 +131,7 @@ export default class BinaryTree {
     return height;
   }
 
-  getNode(process) {
+  forEach(process) {
 
     function inOrder(node) {
       if (node) {
@@ -152,9 +153,8 @@ export default class BinaryTree {
 
   toArray() {
     let arr = [];
-    let node = this.root;
 
-    this.getNode(function(node) {
+    this.forEach(function(node) {
       arr.push(node.data);
     });
 

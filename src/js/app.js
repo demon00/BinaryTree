@@ -1,4 +1,4 @@
-// import sayHello from './lib/SayHello';
+import sayHello from './lib/SayHello';
 import BinaryTree from './BinaryTree';
 
 let tree = new BinaryTree();
@@ -30,10 +30,10 @@ try {
 }
 
 try {
-  console.log('start');
+  // console.log('start');
   tree.remove('x');
   tree.remove('x');
-  console.log('end');
+  // console.log('end');
 } catch({message}) {
   console.log(message); // This tree does not contain 'x'
 }
@@ -57,4 +57,4 @@ tree.remove('e');
 console.log(tree.height()); // 0
 console.log(tree.toArray()); // []
 
-// sayHello();
+sayHello();
